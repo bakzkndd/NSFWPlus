@@ -12,7 +12,7 @@ module.exports = class BlurNSFW extends Plugin {
 			render: settings,
 		});
 		this.patchBlur();
-		if (this.settings.get('blurInDm')) {
+		if (this.settings.get('NSFWTags')) {
 			const ChannelItem = getModule(m => m.default && m.default.displayName == 'ChannelItem', false);
 
 			patch('NSFWtags', ChannelItem, 'default', (_, props) => {
