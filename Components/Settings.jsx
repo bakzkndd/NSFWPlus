@@ -1,7 +1,6 @@
-const { React } = require('@vizality/webpack');
-const { Button } = require('@vizality/components');
+const { getModule, React } = require('@vizality/webpack');
 const { SwitchItem, SliderInput, Category } = require('@vizality/components/settings');
-const TextInputWithButton = require('./TextInputWithButton');
+const { patch, unpatch } = require('@vizality/patcher');
 let blockedChannels = Array(),
 	blurChannels = Array();
 
@@ -43,6 +42,26 @@ module.exports = class Blur extends React.PureComponent {
 				>
 					Blur Timing (in seconds)
 				</SliderInput>
+				<SwitchItem note="NSFW Tags by Channels" value={getSetting('NSFWTags', false)} onChange={() => {
+					toggleSetting('NSFWTags')
+					if(getSetting('NSFWTags')) {
+						unpatch('NSFWtags');
+						document.querySelectorAll('.nsfw-badge').forEach(e => e.remove());
+					} else {
+						const ChannelItem = getModule(m => m.default && m.default.displayName == 'ChannelItem', false);
+
+						patch('NSFWtags', ChannelItem, 'default', (_, props) => {
+							const children = props.props.children.props.children[1].props.children[1].props.children;
+							const channel = children[1].props.channel;
+							if (!channel.nsfw) return props;
+							children.unshift(React.createElement('div', { className: 'nsfw-badge' }, React.createElement('div', { className: 'nsfw-text' }, 'NSFW')));
+							return props;
+						});
+						ChannelItem.default.displayName = 'ChannelItem';
+					}
+				}}>
+					Group Chat
+				</SwitchItem>
 				<p style={{ color: '#b9bbbe' }}>(you will need to switch channel/dm for any changes to take effect)</p>
 			</>
 		);
