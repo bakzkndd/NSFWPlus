@@ -60,7 +60,7 @@ module.exports = class Blur extends React.PureComponent {
 						ChannelItem.default.displayName = 'ChannelItem';
 					}
 				}}>
-					Group Chat
+					NSFW Tags
 				</SwitchItem>
 				<p style={{ color: '#b9bbbe' }}>(you will need to switch channel/dm for any changes to take effect)</p>
 			</>
