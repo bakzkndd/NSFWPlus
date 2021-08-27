@@ -1,5 +1,5 @@
 const { Plugin } = require('@vizality/entities');
-const { inject, uninject } = require('@vizality/injector');
+const { patch, unpatch } = require('@vizality/patcher');
 const { getModule, React } = require('@vizality/webpack');
 const settings = require('./Components/Settings');
 
@@ -11,12 +11,12 @@ module.exports = class BlurNSFW extends Plugin {
 			label: 'Blur NSFW',
 			render: settings,
 		});
-		this.injectBlur();
+		this.patchBlur();
 	}
 
 	pluginWillUnload() {
 		vizality.api.settings.unregisterSettings(this.entityID);
-		uninject('pog-blurnsfw');
+		unpatch('pog-blurnsfw');
 	}
 
 	blurChannel() {
@@ -29,9 +29,9 @@ module.exports = class BlurNSFW extends Plugin {
 		element.classList.add('blur');
 	}
 
-	async injectBlur() {
+	async patchBlur() {
 		const channelTextArea = await getModule(m => m.type && m.type.render && m.type.render.displayName === 'ChannelTextAreaContainer', false);
-		inject('pog-blurnsfw', channelTextArea.type, 'render', (args, res) => {
+		patch('pog-blurnsfw', channelTextArea.type, 'render', (args, res) => {
 			const channel = args[0].channel;
 			const blockedChannels =
 				this.settings.get('Blocked') !== undefined
