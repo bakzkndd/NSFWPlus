@@ -10,38 +10,6 @@ module.exports = class Blur extends React.PureComponent {
 		super(props);
 		this.state = { category0Opened: false, category1Opened: false };
 	}
-	handleBlockChannel() {
-		return blockedChannels.concat('Enter a channel/user id');
-	}
-	handleBlockChannelChange = (idx, newvalue) => {
-		const channels = blockedChannels.map((channel, sidx) => {
-			if (idx !== sidx) return channel;
-			return { ...channel, id: newvalue };
-		});
-		return channels;
-	};
-	handleRemoveBlockChannel = idx => {
-		if (blockedChannels.length > 1) {
-			const channels = blockedChannels.filter((obj, sidx) => sidx !== idx);
-			return channels;
-		}
-	};
-	handleBlurAddChannel() {
-		return blurChannels.concat('Enter a channel/user id');
-	}
-	handleBlurChannelChange = (idx, newvalue) => {
-		const channels = blurChannels.map((channel, sidx) => {
-			if (idx !== sidx) return channel;
-			return { ...channel, id: newvalue };
-		});
-		return channels;
-	};
-	handleRemoveBlurChannel = idx => {
-		if (blurChannels.length > 1) {
-			const channels = blurChannels.filter((obj, sidx) => sidx !== idx);
-			return channels;
-		}
-	};
 	render() {
 		const { getSetting, toggleSetting, updateSetting } = this.props;
 		(blockedChannels = getSetting('Blocked')), (blurChannels = getSetting('Blur'));
@@ -75,68 +43,6 @@ module.exports = class Blur extends React.PureComponent {
 				>
 					Blur Timing (in seconds)
 				</SliderInput>
-				<Category
-					name="Block Channels"
-					description="Block channels from getting effected."
-					opened={this.state.category0Opened}
-					onChange={() => this.setState({ category0Opened: !this.state.category0Opened })}
-				>
-					{blockedChannels.map((channel, idx) => (
-						<div>
-							<TextInputWithButton
-								type="text"
-								placeholder={'Enter a channel/user id'}
-								defaultValue={channel.id}
-								onChange={val => {
-									updateSetting('Blocked', this.handleBlockChannelChange(idx, val));
-								}}
-								buttonOnClick={() => {
-									updateSetting('Blocked', this.handleRemoveBlockChannel(idx));
-								}}
-								buttonText="Remove"
-								buttonIcon="fal fa-minus"
-							/>
-						</div>
-					))}
-					<Button
-						onClick={() => {
-							updateSetting('Blocked', this.handleBlockChannel());
-						}}
-					>
-						Add channel
-					</Button>
-				</Category>
-				<Category
-					name="Blur Channels"
-					description="Blur channels that aren`t affected."
-					opened={this.state.category1Opened}
-					onChange={() => this.setState({ category1Opened: !this.state.category1Opened })}
-				>
-					{blurChannels.map((channel, idx) => (
-						<div>
-							<TextInputWithButton
-								type="text"
-								placeholder={'Enter a channel/user id'}
-								defaultValue={channel.id}
-								onChange={val => {
-									updateSetting('Blur', this.handleBlurChannelChange(idx, val));
-								}}
-								buttonOnClick={() => {
-									updateSetting('Blur', this.handleRemoveBlurChannel(idx));
-								}}
-								buttonText="Remove"
-								buttonIcon="fal fa-minus"
-							/>
-						</div>
-					))}
-					<Button
-						onClick={() => {
-							updateSetting('Blur', this.handleBlurAddChannel());
-						}}
-					>
-						Add channel
-					</Button>
-				</Category>
 				<p style={{ color: '#b9bbbe' }}>(you will need to switch channel/dm for any changes to take effect)</p>
 			</>
 		);
