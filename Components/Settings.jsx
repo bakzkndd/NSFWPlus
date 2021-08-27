@@ -44,7 +44,7 @@ module.exports = class Blur extends React.PureComponent {
 				</SliderInput>
 				<SwitchItem note="NSFW Tags by Channels" value={getSetting('NSFWTags', true)} onChange={() => {
 					toggleSetting('NSFWTags')
-					if(getSetting('NSFWTags')) {
+					if(!getSetting('NSFWTags')) {
 						unpatch('NSFWtags');
 						document.querySelectorAll('.nsfw-badge').forEach(e => e.remove());
 					} else {
