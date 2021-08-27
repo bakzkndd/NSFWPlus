@@ -42,7 +42,7 @@ module.exports = class Blur extends React.PureComponent {
 				>
 					Blur Timing (in seconds)
 				</SliderInput>
-				<SwitchItem note="NSFW Tags by Channels" value={getSetting('NSFWTags', false)} onChange={() => {
+				<SwitchItem note="NSFW Tags by Channels" value={getSetting('NSFWTags', true)} onChange={() => {
 					toggleSetting('NSFWTags')
 					if(getSetting('NSFWTags')) {
 						unpatch('NSFWtags');
