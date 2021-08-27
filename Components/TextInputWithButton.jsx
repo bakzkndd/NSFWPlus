@@ -1,6 +1,6 @@
-const { React, getModule } = require('powercord/webpack');
-const { Flex } = require('powercord/components');
-const { FormItem } = require('powercord/components/settings');
+const { React, getModule } = require('@vizality/webpack');
+const { Flex } = require('@vizality/components');
+const { FormItem } = require('@vizality/components/settings');
 
 const Button = getModule(m => m.ButtonLink, false).default;
 
