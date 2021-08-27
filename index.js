@@ -5,7 +5,7 @@ const settings = require('./Components/Settings');
 
 module.exports = class BlurNSFW extends Plugin {
 	start() {
-		this.loadStylesheet('style.css');
+		this.injectStyles('style.css');
 		vizality.api.settings.registerSettings(this.entityID, {
 			category: this.entityID,
 			label: 'Blur NSFW',
