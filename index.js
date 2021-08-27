@@ -4,7 +4,7 @@ const { getModule, React } = require('@vizality/webpack');
 const settings = require('./Components/Settings');
 
 module.exports = class BlurNSFW extends Plugin {
-	startPlugin() {
+	start() {
 		this.loadStylesheet('style.css');
 		vizality.api.settings.registerSettings(this.entityID, {
 			category: this.entityID,
@@ -14,7 +14,7 @@ module.exports = class BlurNSFW extends Plugin {
 		this.patchBlur();
 	}
 
-	pluginWillUnload() {
+	stop() {
 		vizality.api.settings.unregisterSettings(this.entityID);
 		unpatch('pog-blurnsfw');
 	}
