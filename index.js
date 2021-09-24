@@ -12,18 +12,20 @@ module.exports = class BlurNSFW extends Plugin {
 			render: settings,
 		});
 		this.patchBlur();
-		if (this.settings.get('NSFWTags')) {
-			const ChannelItem = getModule(m => m.default && m.default.displayName == 'ChannelItem', false);
+		setTimeout(function() {
+			if (this.settings.get('NSFWTags')) {
+				const ChannelItem = getModule(m => m.default && m.default.displayName == 'ChannelItem', false);
 
-			patch('NSFWtags', ChannelItem, 'default', (_, props) => {
-				const children = props.props.children.props.children[1].props.children[1].props.children;
-				const channel = children[1].props.channel;
-				if (!channel.nsfw) return props;
-				children.unshift(React.createElement('div', { className: 'nsfw-badge' }, React.createElement('div', { className: 'nsfw-text' }, 'NSFW')));
-				return props;
-			});
-			ChannelItem.default.displayName = 'ChannelItem';
-		}
+				patch('NSFWtags', ChannelItem, 'default', (_, props) => {
+					const children = props.props.children.props.children[1].props.children[1].props.children;
+					const channel = children[1].props.channel;
+					if (!channel.nsfw) return props;
+					children.unshift(React.createElement('div', { className: 'nsfw-badge' }, React.createElement('div', { className: 'nsfw-text' }, 'NSFW')));
+					return props;
+				});
+				ChannelItem.default.displayName = 'ChannelItem';
+			}
+		}, 1000)
 	}
 
 	stop() {
